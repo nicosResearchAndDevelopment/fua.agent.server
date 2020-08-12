@@ -91,7 +91,7 @@ module['exports'] = (config) => {
             cpu = cpus[i];
 
             //Total up the time in the cores tick
-            for (type in cpu.times) {
+            for (let type in cpu.times) {
                 totalTick += cpu.times[type];
             }
 
@@ -105,7 +105,7 @@ module['exports'] = (config) => {
 
     function _heartbeat_cpu_usage_fn(beatPerSecond) {
 
-        handle = setTimeout(
+        let handle = setTimeout(
             function () {
                 //Grab second Measure
                 let
