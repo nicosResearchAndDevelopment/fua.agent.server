@@ -1,4 +1,3 @@
 # fua.agent.Server
 
 ---
-## EOF
