@@ -1,7 +1,7 @@
 const
     EventEmitter             = require('events'),
     express                  = require('express'),
-    // ExpressSession             = require('express-session'),
+    ExpressSession           = require('express-session'),
     // {CloudEvent, HTTP: ceHTTP} = require('cloudevents'),
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
@@ -36,6 +36,8 @@ class ServerAgent {
     #app        = null;
     /** @type {import("socket.io")} */
     #io         = null;
+    /** @type {import("express-session")} */
+    #sessions   = null;
 
     /**
      * @param {{
@@ -61,7 +63,8 @@ class ServerAgent {
      *            context?: {[prefix: string]: string},
      *            app?: boolean | {},
      *            server?: boolean | {},
-     *            io?: boolean | {}
+     *            io?: boolean | {},
+     *            sessions?: boolean | {}
      *         }} options
      * @returns {Promise<ServerAgent>}
      */
@@ -101,6 +104,15 @@ class ServerAgent {
             this.#io      = socket_io(this.#server, ioOptions);
         }
 
+        if (options.sessions) {
+            const
+                sessionsOptions    = util.isObject(options.sessions) ? options.sessions : {},
+                sessionsMiddleware = util.isFunction(options.sessions) ? options.sessions : ExpressSession(sessionsOptions);
+            this.#sessions         = sessionsMiddleware;
+            if (this.#app) this.#app.use((request, response, next) => this.#sessions(request, response, next));
+            if (this.#io) this.#io.use((socket, next) => this.#sessions(socket.request, socket.request.res, next));
+        }
+
         return this;
     } // ServerAgent#initialize
 
@@ -131,6 +143,10 @@ class ServerAgent {
     get io() {
         return this.#io;
     } // ServerAgent#io
+
+    get sessions() {
+        return this.#sessions;
+    } // ServerAgent#sessions
 
     listen(options = {}) {
         return new Promise((resolve, reject) => {
