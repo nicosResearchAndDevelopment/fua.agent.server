@@ -17,16 +17,16 @@ util.pause = function (seconds) {
 util.requireServerModule = function (type) {
     switch (type) {
         case 'net':
-            return require('net');
+            return require('net').Server;
 
         case 'tls':
-            return require('tls');
+            return require('tls').Server;
 
         case 'http':
-            return require('http');
+            return require('http').Server;
 
         case 'https':
-            return require('https');
+            return require('https').Server;
 
         default:
             util.assert(false, 'unknown ServerModule type "' + type + '"');

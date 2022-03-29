@@ -10,6 +10,10 @@ const
 
 class ServerAgent {
 
+    /**
+     * @param options
+     * @returns {Promise<ServerAgent>}
+     */
     static async create(options) {
         const agent = new this(options);
         return await agent.initialize(options);
@@ -33,6 +37,13 @@ class ServerAgent {
     /** @type {import("socket.io")} */
     #io         = null;
 
+    /**
+     * @param {{
+     *            schema?: string,
+     *            hostname?: string,
+     *            port?: number
+     *         }} options
+     */
     constructor(options = {}) {
         this.#schema   = options.schema || this.#schema;
         this.#hostname = options.hostname || this.#hostname;
@@ -42,6 +53,18 @@ class ServerAgent {
         this.#baseURL = this.#schema + '://' + this.#hostname + ':' + this.#port + '/';
     } // ServerAgent#constructor
 
+    /**
+     * @param {{
+     *            space?: fua.module.space.Space,
+     *            store?: fua.module.persistence.DataStore | {module?: string, options?: {}},
+     *            factory?: fua.module.persistence.DataFactory,
+     *            context?: {[prefix: string]: string},
+     *            app?: boolean | {},
+     *            server?: boolean | {},
+     *            io?: boolean | {}
+     *         }} options
+     * @returns {Promise<ServerAgent>}
+     */
     async initialize(options = {}) {
         if (options.space instanceof Space) {
             this.#space = options.space;
@@ -66,9 +89,9 @@ class ServerAgent {
 
         if (options.server) {
             const
-                ServerModule  = util.requireStoreModule(this.#schema),
+                ServerModule  = util.requireServerModule(this.#schema),
                 serverOptions = util.isObject(options.server) ? options.server : {};
-            this.#server      = ServerModule.createServer(serverOptions, this.#app);
+            this.#server      = new ServerModule(serverOptions, this.#app);
         }
 
         if (options.io) {
@@ -109,7 +132,7 @@ class ServerAgent {
         return this.#io;
     } // ServerAgent#io
 
-    listen({port = this.#port, host = this.#hostname, ...options} = {}) {
+    listen(options = {}) {
         return new Promise((resolve, reject) => {
             let onListening, onError;
             onListening = () => {
@@ -122,7 +145,7 @@ class ServerAgent {
             };
             this.#server.once('listening', onListening);
             this.#server.once('error', onError);
-            this.#server.listen({port, host, ...options});
+            this.#server.listen({port: this.#port, host: this.#hostname, ...options});
         });
     } // ServerAgent#listen
 
