@@ -93,22 +93,23 @@ class ServerAgent {
         if (options.server) {
             const
                 ServerModule  = util.requireServerModule(this.#schema),
-                serverOptions = util.isObject(options.server) ? options.server : {};
+                serverOptions = util.isObject(options.server) && options.server || {};
             this.#server      = new ServerModule(serverOptions, this.#app);
         }
 
         if (options.io) {
             util.assert(this.#server, 'io options cannot be used without a server');
-            const
-                ioOptions = util.isObject(options.io) ? options.io : {};
-            this.#io      = socket_io(this.#server, ioOptions);
+            const ioOptions = util.isObject(options.io) && options.io || {};
+            this.#io        = socket_io(this.#server, ioOptions);
         }
 
         if (options.sessions) {
-            const
-                sessionsOptions    = util.isObject(options.sessions) ? options.sessions : {},
-                sessionsMiddleware = util.isFunction(options.sessions) ? options.sessions : ExpressSession(sessionsOptions);
-            this.#sessions         = sessionsMiddleware;
+            if (util.isFunction(options.sessions)) {
+                this.#sessions = options.sessions;
+            } else {
+                const sessionsOptions = util.isObject(options.sessions) && options.sessions || {};
+                this.#sessions        = ExpressSession(sessionsOptions);
+            }
             if (this.#app) this.#app.use((request, response, next) => this.#sessions(request, response, next));
             if (this.#io) this.#io.use((socket, next) => this.#sessions(socket.request, socket.request.res, next));
         }
