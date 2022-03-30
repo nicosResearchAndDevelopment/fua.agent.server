@@ -15,6 +15,7 @@ class ServerAgent {
      * @returns {Promise<ServerAgent>}
      */
     static async create(options) {
+        if (options instanceof this) return options;
         const agent = new this(options);
         return await agent.initialize(options);
     } // ServerAgent.create
@@ -69,6 +70,8 @@ class ServerAgent {
      * @returns {Promise<ServerAgent>}
      */
     async initialize(options = {}) {
+        this.emit('initialize', options);
+
         if (options.space instanceof Space) {
             this.#space = options.space;
         } else if (options.store instanceof DataStore) {
@@ -151,26 +154,33 @@ class ServerAgent {
 
     listen(options = {}) {
         return new Promise((resolve, reject) => {
+            options     = {port: this.#port, host: this.#hostname, ...options};
             let onListening, onError;
             onListening = () => {
                 this.#server.off('error', onError);
+                this.emit('listening', options);
                 resolve(this);
             };
             onError     = (err) => {
                 this.#server.off('listening', onListening);
+                this.emit('error', err);
                 reject(err);
             };
             this.#server.once('listening', onListening);
             this.#server.once('error', onError);
-            this.#server.listen({port: this.#port, host: this.#hostname, ...options});
+            this.#server.listen(options);
         });
     } // ServerAgent#listen
 
     close() {
         return new Promise((resolve, reject) => {
             this.#server.close((err) => {
-                if (err) reject(err);
-                else resolve(this);
+                if (err) {
+                    reject(err);
+                } else {
+                    this.emit('closed');
+                    resolve(this);
+                }
             });
         });
     } // ServerAgent#close
