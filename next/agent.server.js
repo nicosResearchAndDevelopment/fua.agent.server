@@ -153,6 +153,7 @@ class ServerAgent {
     } // ServerAgent#sessions
 
     listen(options = {}) {
+        util.assert(this.#server, 'a server has not been initialized');
         return new Promise((resolve, reject) => {
             options     = {port: this.#port, host: this.#hostname, ...options};
             let onListening, onError;
@@ -173,6 +174,7 @@ class ServerAgent {
     } // ServerAgent#listen
 
     close() {
+        util.assert(this.#server, 'a server has not been initialized');
         return new Promise((resolve, reject) => {
             this.#server.close((err) => {
                 if (err) {
