@@ -1,13 +1,41 @@
 {
-  "name": "fua.agent.Server",
+  "name": "@nrd/fua.agent.server",
   "version": "1.0.0",
-  "description": "Coer server of instance",
-  "main": "./src/agent.Server.js",
-  "directories": {
-    "doc": "doc"
+  "description": "Core agent class for any server.",
+  "exports": {
+    ".": {
+      "require": "./src/agent.Server.js"
+    },
+    "./beta": {
+      "require": "./src/agent.Server.beta.js"
+    },
+    "./next": {
+      "require": "./next/agent.server.js"
+    }
+  },
+  "files": [
+    "src/*"
+  ],
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "socket.io": "^3.1.0",
+    "@nrd/fua.core.util": "1.0.0",
+    "@nrd/fua.module.persistence": "1.0.0",
+    "@nrd/fua.module.space": "1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "expect": "^26.6.2",
+    "@nrd/fua.module.persistence.inmemory": "1.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
+  },
+  "mocha": {
+    "bail": false,
+    "recursive": false,
+    "spec": "test/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +44,6 @@
   "keywords": [
     "server"
   ],
-  "author": "jlangkau@nicos-ag.com",
-  "license": "ISC"
+  "author": "spetrac@nicos-ag.com",
+  "license": "UNLICENSED"
 }
