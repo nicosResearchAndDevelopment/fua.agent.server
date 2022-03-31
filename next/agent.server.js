@@ -131,7 +131,7 @@ class ServerAgent {
                     util.assert(domainNode, 'expected server to have a domain node defined');
                     domainOptions.uri = domainNode.id;
                 }
-                this.#domain = new DomainAgent(domainOptions);
+                this.#domain = await DomainAgent.create(domainOptions);
             }
         }
 
