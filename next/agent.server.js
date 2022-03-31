@@ -6,6 +6,7 @@ const
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
     {Space}                  = require('@nrd/fua.module.space'),
+    DomainAgent              = require('../../agent.Domain/next/agent.domain.js'),
     util                     = require('./agent.server.util.js');
 
 class ServerAgent {
@@ -39,6 +40,8 @@ class ServerAgent {
     #io         = null;
     /** @type {import("express-session")} */
     #sessions   = null;
+    /** @type {DomainAgent} */
+    #domain     = null;
 
     /**
      * @param {{
@@ -117,6 +120,21 @@ class ServerAgent {
             if (this.#io) this.#io.use((socket, next) => this.#sessions(socket.request, socket.request.res, next));
         }
 
+        if (options.domain) {
+            if (options.domain instanceof DomainAgent) {
+                this.#domain = options.domain;
+            } else {
+                const domainOptions = util.isObject(options.domain) && options.domain || {};
+                if (!domainOptions.space) domainOptions.space = this.#space;
+                if (!domainOptions.uri) {
+                    const domainNode = this.#serverNode.getNode('ecm:domain');
+                    util.assert(domainNode, 'expected server to have a domain node defined');
+                    domainOptions.uri = domainNode.id;
+                }
+                this.#domain = new DomainAgent(domainOptions);
+            }
+        }
+
         return this;
     } // ServerAgent#initialize
 
@@ -151,6 +169,10 @@ class ServerAgent {
     get sessions() {
         return this.#sessions;
     } // ServerAgent#sessions
+
+    get domain() {
+        return this.#domain;
+    } // ServerAgent#domain
 
     listen(options = {}) {
         util.assert(this.#server, 'a server has not been initialized');
