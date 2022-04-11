@@ -4,13 +4,13 @@
   "description": "Core agent class for any server.",
   "exports": {
     ".": {
-      "require": "./src/agent.Server.js"
+      "require": "./src/agent.server.js"
     },
-    "./beta": {
-      "require": "./src/agent.Server.beta.js"
+    "./back": {
+      "require": "./back/src/agent.Server.js"
     },
-    "./next": {
-      "require": "./next/agent.server.js"
+    "./back/beta": {
+      "require": "./back/src/agent.Server.beta.js"
     }
   },
   "files": [

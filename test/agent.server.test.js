@@ -4,7 +4,7 @@ const
     fetch                    = require('node-fetch'),
     {DataFactory}            = require('@nrd/fua.module.persistence'),
     InmemoryStore            = require('@nrd/fua.module.persistence.inmemory'),
-    ServerAgent              = require('./agent.server.js');
+    ServerAgent              = require('../src/agent.server.js');
 
 describe('agent.server/next', function () {
 

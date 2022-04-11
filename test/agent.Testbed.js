@@ -1,11 +1,11 @@
 const
-    util        = require('./agent.server.util.js'),
+    util        = require('../src/agent.server.util.js'),
     AgentAmec   = require('@nrd/fua.agent.amec'),
     {Scheduler} = require(path.join(util.FUA_JS_LIB, 'agent.Scheduler/src/agent.Scheduler.js')),
     {Domain}    = require(path.join(util.FUA_JS_LIB, 'agent.Domain/src/agent.Domain.beta.js')),
     {PEP}       = require('@nrd/fua.decide.pep'),
     {DAPS}      = require('@nrd/fua.ids.agent.daps'),
-    ServerAgent = require('./agent.server.js');
+    ServerAgent = require('../src/agent.server.js');
 
 class TestbedAgent extends ServerAgent {
 
