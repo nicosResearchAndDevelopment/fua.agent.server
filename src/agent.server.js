@@ -1,13 +1,13 @@
 const
+    util                     = require('./agent.server.util.js'),
     EventEmitter             = require('events'),
     express                  = require('express'),
     ExpressSession           = require('express-session'),
-    // {CloudEvent, HTTP: ceHTTP} = require('cloudevents'),
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
-    {Space}                  = require('@nrd/fua.module.space'),
+    {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
     DomainAgent              = require('../../agent.Domain/next/agent.domain.js'),
-    util                     = require('./agent.server.util.js');
+    AmecAgent                = require('@nrd/fua.agent.amec');
 
 class ServerAgent {
 
@@ -42,6 +42,8 @@ class ServerAgent {
     #sessions   = null;
     /** @type {DomainAgent} */
     #domain     = null;
+    /** @type {AmecAgent} */
+    #amec       = null;
 
     /**
      * @param {{
@@ -68,7 +70,9 @@ class ServerAgent {
      *            app?: boolean | {},
      *            server?: boolean | {},
      *            io?: boolean | {},
-     *            sessions?: boolean | {}
+     *            sessions?: boolean | {},
+     *            domain?: boolean | {},
+     *            amec?: boolean | {}
      *         }} options
      * @returns {Promise<ServerAgent>}
      */
@@ -135,6 +139,15 @@ class ServerAgent {
             }
         }
 
+        if (options.amec) {
+            if (options.amec instanceof AmecAgent) {
+                this.#amec = options.amec;
+            } else {
+                const amecOptions = util.isObject(options.domain) && options.domain || {};
+                this.#amec        = new AmecAgent(amecOptions);
+            }
+        }
+
         return this;
     } // ServerAgent#initialize
 
@@ -173,6 +186,10 @@ class ServerAgent {
     get domain() {
         return this.#domain;
     } // ServerAgent#domain
+
+    get amec() {
+        return this.#amec;
+    } // ServerAgent#amec
 
     listen(options = {}) {
         util.assert(this.#server, 'a server has not been initialized');
