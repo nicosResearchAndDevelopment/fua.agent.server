@@ -9,6 +9,7 @@ const
     DomainAgent              = require('../../agent.Domain/next/agent.domain.js'),
     AmecAgent                = require('@nrd/fua.agent.amec');
 
+/** @alias fua.agent.server */
 class ServerAgent {
 
     /**
