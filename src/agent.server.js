@@ -6,7 +6,7 @@ const
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
     {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
-    DomainAgent              = require('../../agent.Domain/next/agent.domain.js'),
+    DomainAgent              = require('@nrd/fua.agent.domain'),
     AmecAgent                = require('@nrd/fua.agent.amec');
 
 /** @alias fua.agent.server */
