@@ -6,6 +6,7 @@ const
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
     {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
+    EventAgent               = require('@nrd/fua.agent.event'),
     DomainAgent              = require('@nrd/fua.agent.domain'),
     AmecAgent                = require('@nrd/fua.agent.amec');
 
@@ -41,6 +42,8 @@ class ServerAgent {
     #io         = null;
     /** @type {import("express-session")} */
     #sessions   = null;
+    /** @type {EventAgent} */
+    #event      = null;
     /** @type {DomainAgent} */
     #domain     = null;
     /** @type {AmecAgent} */
@@ -72,8 +75,9 @@ class ServerAgent {
      *            server?: boolean | {},
      *            io?: boolean | {},
      *            sessions?: boolean | {},
-     *            domain?: boolean | {},
-     *            amec?: boolean | {}
+     *            event?: boolean | {} | EventAgent,
+     *            domain?: boolean | {} | DomainAgent,
+     *            amec?: boolean | {} | AmecAgent
      *         }} options
      * @returns {Promise<ServerAgent>}
      */
@@ -123,6 +127,15 @@ class ServerAgent {
             }
             if (this.#app) this.#app.use((request, response, next) => this.#sessions(request, response, next));
             if (this.#io) this.#io.use((socket, next) => this.#sessions(socket.request, socket.request.res, next));
+        }
+
+        if (options.event) {
+            if (options.event instanceof EventAgent) {
+                this.#event = options.event;
+            } else {
+                const eventsOptions = util.isObject(options.event) && options.event || {};
+                this.#event         = new EventAgent(eventsOptions);
+            }
         }
 
         if (options.domain) {
@@ -183,6 +196,10 @@ class ServerAgent {
     get sessions() {
         return this.#sessions;
     } // ServerAgent#sessions
+
+    get event() {
+        return this.#event;
+    } // ServerAgent#event
 
     get domain() {
         return this.#domain;

@@ -25,7 +25,8 @@
     "@nrd/fua.module.persistence": "1.0.0",
     "@nrd/fua.module.space": "1.0.0",
     "@nrd/fua.agent.amec": "1.0.0",
-    "@nrd/fua.agent.domain": "1.0.0"
+    "@nrd/fua.agent.domain": "1.0.0",
+    "@nrd/fua.agent.event": "1.0.0"
   },
   "devDependencies": {
     "mocha": "^8.2.1",
