@@ -102,7 +102,8 @@ class ServerAgent {
 
         this.#serverNode = this.#space.getNode(this.#baseURI);
         await this.#serverNode.load();
-        util.assert(this.#serverNode.type, `node for "${this.#baseURI}" not found in the space`);
+        // REM: removed serverNode validation to enable ServerAgent without a space
+        // util.assert(this.#serverNode.type, `node for "${this.#baseURI}" not found in the space`);
 
         if (options.app) {
             this.#app = express();
