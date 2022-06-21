@@ -6,6 +6,7 @@ const
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
     {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
+    SchedulerAgent           = require('@nrd/fua.agent.scheduler'),
     EventAgent               = require('@nrd/fua.agent.event'),
     DomainAgent              = require('@nrd/fua.agent.domain'),
     AmecAgent                = require('@nrd/fua.agent.amec');
@@ -42,6 +43,8 @@ class ServerAgent {
     #io         = null;
     /** @type {import("express-session")} */
     #sessions   = null;
+    /** @type {SchedulerAgent} */
+    #scheduler  = null;
     /** @type {EventAgent} */
     #event      = null;
     /** @type {DomainAgent} */
@@ -75,6 +78,7 @@ class ServerAgent {
      *            server?: boolean | {},
      *            io?: boolean | {},
      *            sessions?: boolean | {},
+     *            scheduler?: boolean | {} | SchedulerAgent,
      *            event?: boolean | {} | EventAgent,
      *            domain?: boolean | {} | DomainAgent,
      *            amec?: boolean | {} | AmecAgent
@@ -127,6 +131,15 @@ class ServerAgent {
             }
             if (this.#app) this.#app.use((request, response, next) => this.#sessions(request, response, next));
             if (this.#io) this.#io.use((socket, next) => this.#sessions(socket.request, socket.request.res, next));
+        }
+
+        if (options.scheduler) {
+            if (options.scheduler instanceof SchedulerAgent) {
+                this.#scheduler = options.scheduler;
+            } else {
+                const schedulerOptions = util.isObject(options.scheduler) && options.scheduler || {};
+                this.#scheduler        = new SchedulerAgent(schedulerOptions);
+            }
         }
 
         if (options.event) {
@@ -196,6 +209,10 @@ class ServerAgent {
     get sessions() {
         return this.#sessions;
     } // ServerAgent#sessions
+
+    get scheduler() {
+        return this.#scheduler;
+    } // ServerAgent#scheduler
 
     get event() {
         return this.#event;
