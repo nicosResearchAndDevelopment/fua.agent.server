@@ -1,3 +1,3 @@
-# fua.agent.Server
+# @nrd/fua.agent.server
 
 ---
