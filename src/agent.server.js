@@ -56,15 +56,25 @@ class ServerAgent {
      * @param {{
      *            schema?: string,
      *            hostname?: string,
-     *            port?: number
+     *            port?: number,
+     *            uri?: string,
+     *            url?: string
      *         }} options
      */
     constructor(options = {}) {
-        this.#schema   = options.schema || this.#schema;
-        this.#hostname = options.hostname || this.#hostname;
-        this.#port     = options.port || this.#port;
+        if (options.url) {
+            const [match, schema, hostname, port] = /^(\w+):\/\/([\w.-]+)(?::(\d+))?/.exec(options.url) || [];
+            util.assert(match, 'expected url to have an url format');
+            this.#schema   = schema;
+            this.#hostname = hostname;
+            this.#port     = port ? Number(port) : schema === 'https' ? 443 : schema === 'http' ? 80 : this.#port;
+        } else {
+            this.#schema   = options.schema || this.#schema;
+            this.#hostname = options.hostname || this.#hostname;
+            this.#port     = options.port || this.#port;
+        }
 
-        this.#baseURI = this.#schema + '://' + this.#hostname + '/';
+        this.#baseURI = options.uri || (this.#schema + '://' + this.#hostname + '/');
         this.#baseURL = this.#schema + '://' + this.#hostname + ':' + this.#port + '/';
     } // ServerAgent#constructor
 

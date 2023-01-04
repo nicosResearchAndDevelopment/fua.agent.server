@@ -1,6 +1,6 @@
 {
   "name": "@nrd/fua.agent.server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core agent class for any server.",
   "main": "src/agent.server.js",
   "files": [
