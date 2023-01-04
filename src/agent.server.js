@@ -240,7 +240,7 @@ class ServerAgent {
     listen(options = {}) {
         util.assert(this.#server, 'a server has not been initialized');
         return new Promise((resolve, reject) => {
-            options     = {port: this.#port, host: this.#hostname, ...options};
+            options     = {port: this.#port, ...options};
             let onListening, onError;
             onListening = () => {
                 this.#server.off('error', onError);
