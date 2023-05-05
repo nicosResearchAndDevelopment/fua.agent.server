@@ -193,6 +193,10 @@ class ServerAgent {
         return this.#baseURI;
     } // ServerAgent#uri
 
+    /**
+     * NOTE in a docker setup with localhost as hostname, the url might not be that useful
+     * TODO try to change the url to reflect the actual endpoint
+     */
     get url() {
         return this.#baseURL;
     } // ServerAgent#url
