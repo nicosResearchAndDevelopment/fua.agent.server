@@ -6,7 +6,7 @@ const
     socket_io                = require('socket.io'),
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
     {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
-    SchedulerAgent           = require('@nrd/fua.agent.scheduler'),
+    {Scheduler}              = require('@nrd/fua.module.scheduler'),
     EventAgent               = require('@nrd/fua.agent.event'),
     DomainAgent              = require('@nrd/fua.agent.domain'),
     AmecAgent                = require('@nrd/fua.agent.amec');
@@ -43,7 +43,7 @@ class ServerAgent {
     #io         = null;
     /** @type {import("express-session")} */
     #sessions   = null;
-    /** @type {SchedulerAgent} */
+    /** @type {Scheduler} */
     #scheduler  = null;
     /** @type {EventAgent} */
     #event      = null;
@@ -88,7 +88,7 @@ class ServerAgent {
      *            server?: boolean | {},
      *            io?: boolean | {},
      *            sessions?: boolean | {},
-     *            scheduler?: boolean | {} | SchedulerAgent,
+     *            scheduler?: boolean | {} | Scheduler,
      *            event?: boolean | {} | EventAgent,
      *            domain?: boolean | {} | DomainAgent,
      *            amec?: boolean | {} | AmecAgent
@@ -145,11 +145,11 @@ class ServerAgent {
         }
 
         if (options.scheduler) {
-            if (options.scheduler instanceof SchedulerAgent) {
+            if (options.scheduler instanceof Scheduler) {
                 this.#scheduler = options.scheduler;
             } else {
                 const schedulerOptions = util.isObject(options.scheduler) && options.scheduler || {};
-                this.#scheduler        = new SchedulerAgent(schedulerOptions);
+                this.#scheduler        = new Scheduler(schedulerOptions);
             }
         }
 
