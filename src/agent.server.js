@@ -7,7 +7,7 @@ const
     {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
     {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
     {Scheduler}              = require('@nrd/fua.module.scheduler'),
-    EventAgent               = require('@nrd/fua.agent.event'),
+    Events                   = require('@nrd/fua.agent.events'),
     DomainAgent              = require('@nrd/fua.agent.domain'),
     AmecAgent                = require('@nrd/fua.agent.amec');
 
@@ -45,8 +45,8 @@ class ServerAgent {
     #sessions   = null;
     /** @type {Scheduler} */
     #scheduler  = null;
-    /** @type {EventAgent} */
-    #event      = null;
+    /** @type {typeof Events} */
+    #event      = Events;
     /** @type {DomainAgent} */
     #domain     = null;
     /** @type {AmecAgent} */
@@ -89,7 +89,6 @@ class ServerAgent {
      *            io?: boolean | {},
      *            sessions?: boolean | {},
      *            scheduler?: boolean | {} | Scheduler,
-     *            event?: boolean | {} | EventAgent,
      *            domain?: boolean | {} | DomainAgent,
      *            amec?: boolean | {} | AmecAgent
      *         }} options
@@ -150,15 +149,6 @@ class ServerAgent {
             } else {
                 const schedulerOptions = util.isObject(options.scheduler) && options.scheduler || {};
                 this.#scheduler        = new Scheduler(schedulerOptions);
-            }
-        }
-
-        if (options.event) {
-            if (options.event instanceof EventAgent) {
-                this.#event = options.event;
-            } else {
-                const eventsOptions = util.isObject(options.event) && options.event || {};
-                this.#event         = new EventAgent(eventsOptions);
             }
         }
 
