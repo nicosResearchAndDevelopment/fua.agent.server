@@ -19,10 +19,10 @@ const
     MemoryStore    = require('memorystore')(ExpressSession);
 
 Object.defineProperties(Server, {
-    // server:  {get: () => _Server.server || null, enumerable: true},
-    // session: {get: () => _Server.session || null, enumerable: true},
-    app: {get: () => _Server.app || null, enumerable: true},
-    io:  {get: () => _Server.io || null, enumerable: true}
+    server:  {get: () => _Server.server || null, enumerable: true},
+    session: {get: () => _Server.session || null, enumerable: true},
+    app:     {get: () => _Server.app || null, enumerable: true},
+    io:      {get: () => _Server.io || null, enumerable: true}
 });
 
 Server.initialize = async function (options) {
