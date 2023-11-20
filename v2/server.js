@@ -89,7 +89,10 @@ _Server.initializeStatic = function (pathArr) {
 };
 
 _Server.initializeMiddleware = function (middlewareArr) {
-
+    for (let publicMiddleware of middlewareArr) {
+        assert.function(publicMiddleware);
+        _Server.app.use(publicMiddleware);
+    }
 };
 
 _Server.initializeIO = function (options) {
