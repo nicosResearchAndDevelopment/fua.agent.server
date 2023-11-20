@@ -9,6 +9,7 @@ Object.defineProperty(global, identifier, {value: Server, configurable: false, w
 const
     _Server        = Object.create(null),
     is             = require('@nrd/fua.core.is'),
+    objects        = require('@nrd/fua.core.objects'),
     http           = require('http'),
     https          = require('https'),
     SocketIO       = require('socket.io'),
@@ -65,7 +66,8 @@ _Server.initializeApp = function (options) {
     _Server.server.on('request', _Server.app);
     if (_Server.session) _Server.app.use(_Server.session);
     if (is.object(options.parse)) _Server.initializeParser(options.parse);
-    if (options.public) _Server.initializeStatic(is.array(options.public) ? options.public : [options.public]);
+    if (options.public) _Server.initializeStatic(objects.array(options.public));
+    if (options.use) _Server.initializeMiddleware(objects.array(options.use));
 };
 
 _Server.initializeParser = function (options) {
@@ -84,6 +86,10 @@ _Server.initializeStatic = function (pathArr) {
         assert.string(publicPath);
         _Server.app.use(Express.static(publicPath));
     }
+};
+
+_Server.initializeMiddleware = function (middlewareArr) {
+
 };
 
 _Server.initializeIO = function (options) {
