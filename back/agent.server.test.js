@@ -6,7 +6,7 @@ const
     {Space}                         = require('@nrd/fua.module.space'),
     {DataFactory}                   = require('@nrd/fua.module.persistence'),
     FilesystemStore                 = require('@nrd/fua.module.persistence.filesystem'),
-    ServerAgent                     = require('../src/agent.server.js');
+    ServerAgent                     = require('./agent.server.js');
 
 describe('agent.server', function () {
 
