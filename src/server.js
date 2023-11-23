@@ -100,12 +100,22 @@ _Server.initializeIO = function (options) {
     assert(!_Server.io, 'IO already initialized');
     assert.object(options);
     _Server.io = new SocketIO.Server(_Server.server, options);
-    if (_Server.session) _Server.io.use((socket, next) => {
-        _Server.session(socket.request, socket.request.res, (sessionErr) => {
+    // if (_Server.session) _Server.io.use((socket, next) => {
+    //     _Server.session(socket.request, socket.request.res, (sessionErr) => {
+    //         if (sessionErr) return next(sessionErr);
+    //         socket.request.session.reload((reloadErr) => {
+    //             if (reloadErr) return next(reloadErr);
+    //             socket.session = socket.request.session;
+    //             next();
+    //         });
+    //     })
+    // });
+    if (_Server.session) _Server.io.engine.use((request, response, next) => {
+        _Server.session(request, response, (sessionErr) => {
             if (sessionErr) return next(sessionErr);
-            socket.request.session.reload((reloadErr) => {
+            request.session.reload((reloadErr) => {
                 if (reloadErr) return next(reloadErr);
-                socket.session = socket.request.session;
+                request.socket.session = request.session;
                 next();
             });
         })
