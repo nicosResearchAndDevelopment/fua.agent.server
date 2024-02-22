@@ -113,11 +113,16 @@ _Server.initializeIO = function (options) {
     if (_Server.session) _Server.io.engine.use((request, response, next) => {
         _Server.session(request, response, (sessionErr) => {
             if (sessionErr) return next(sessionErr);
-            request.session.reload((reloadErr) => {
-                if (reloadErr) return next(reloadErr);
-                request.socket.session = request.session;
-                next();
-            });
+            request.socket.session = request.session;
+            next();
+            // INFO the reload of the session caused errors with empty sessions and prevented socket.io-connections
+            // REM reloading or saving the session at some point might be necessary with web-sockets
+            // SEE https://www.npmjs.com/package/express-session
+            // request.session.reload((reloadErr) => {
+            //     if (reloadErr) return next(reloadErr);
+            //     request.socket.session = request.session;
+            //     next();
+            // });
         })
     });
 };
