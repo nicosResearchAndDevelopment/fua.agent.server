@@ -63,8 +63,8 @@ _Server.initializeApp = function (options) {
     assert(!_Server.app, 'App already initialized');
     assert.object(options);
     _Server.app = Express();
+    _Server.app.disable('x-powered-by');
     _Server.server.on('request', _Server.app);
-    _Server.app.set('x-powered-by', false);
     if (_Server.session) _Server.app.use(_Server.session);
     if (is.object(options.parse)) _Server.initializeParser(options.parse);
     if (options.public) _Server.initializeStatic(objects.array(options.public));
