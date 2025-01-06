@@ -1,5 +1,5 @@
 {
-  "name": "@nrd/fua.agent.server",
+  "name": "@fua/agent.server",
   "version": "2.0.3",
   "description": "Core agent for any server.",
   "main": "src/server.js",
@@ -12,13 +12,13 @@
     "socket.io": "^4.8.1",
     "multer": "^1.4.5-lts.1",
     "memorystore": "^1.6.7",
-    "@nrd/fua.core.assert": "^1.0.2",
-    "@nrd/fua.core.is": "^1.0.7",
-    "@nrd/fua.core.objects": "^1.0.1"
+    "@fua/core.assert": "^1.0.2",
+    "@fua/core.is": "^1.0.7",
+    "@fua/core.objects": "^1.0.1"
   },
   "devDependencies": {
-    "mocha": "^8.2.1",
-    "expect": "^26.6.2"
+    "expect": "26.x",
+    "mocha": "10.x"
   },
   "scripts": {
     "test": "mocha"
@@ -30,11 +30,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git02.int.nsc.ag:10022/research/fua/agent/server.git"
+    "url": "ssh://git@github.com:nicosResearchAndDevelopment/fua.agent.server.git"
   },
   "keywords": [
     "server"
   ],
-  "author": "spetrac@nicos-ag.com",
-  "license": "UNLICENSED"
+  "author": "Simon Petrac <pfoerdie@gmail.com>",
+  "license": "MIT"
 }

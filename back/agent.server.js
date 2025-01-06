@@ -4,12 +4,12 @@ const
     express                  = require('express'),
     ExpressSession           = require('express-session'),
     socket_io                = require('socket.io'),
-    {DataStore, DataFactory} = require('@nrd/fua.module.persistence'),
-    {Space, Node: SpaceNode} = require('@nrd/fua.module.space'),
-    {Scheduler}              = require('@nrd/fua.module.scheduler'),
-    Events                   = require('@nrd/fua.agent.events'),
-    DomainAgent              = require('@nrd/fua.agent.domain'),
-    AmecAgent                = require('@nrd/fua.agent.amec');
+    {DataStore, DataFactory} = require('@fua/module.persistence'),
+    {Space, Node: SpaceNode} = require('@fua/module.space'),
+    {Scheduler}              = require('@fua/module.scheduler'),
+    Events                   = require('@fua/agent.events'),
+    DomainAgent              = require('@fua/agent.domain'),
+    AmecAgent                = require('@fua/agent.amec');
 
 /** @alias fua.agent.server */
 class ServerAgent {

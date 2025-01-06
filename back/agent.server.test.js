@@ -2,9 +2,9 @@ const
     {describe, test, before, after} = require('mocha'),
     expect                          = require('expect'),
     path                            = require('path'),
-    {Space}                         = require('@nrd/fua.module.space'),
-    {DataFactory}                   = require('@nrd/fua.module.persistence'),
-    FilesystemStore                 = require('@nrd/fua.module.persistence.filesystem'),
+    {Space}                         = require('@fua/module.space'),
+    {DataFactory}                   = require('@fua/module.persistence'),
+    FilesystemStore                 = require('@fua/module.persistence.filesystem'),
     ServerAgent                     = require('./agent.server.js');
 
 describe('agent.server', function () {

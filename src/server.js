@@ -1,15 +1,15 @@
 const
     Server             = exports,
     {name: identifier} = require('../package.json'),
-    assert             = require('@nrd/fua.core.assert');
+    assert             = require('@fua/core.assert');
 
 assert(!global[identifier], 'unable to load a second uncached version of the singleton ' + identifier);
 Object.defineProperty(global, identifier, {value: Server, configurable: false, writable: false, enumerable: false});
 
 const
     _Server        = Object.create(null),
-    is             = require('@nrd/fua.core.is'),
-    objects        = require('@nrd/fua.core.objects'),
+    is             = require('@fua/core.is'),
+    objects        = require('@fua/core.objects'),
     http           = require('http'),
     https          = require('https'),
     SocketIO       = require('socket.io'),

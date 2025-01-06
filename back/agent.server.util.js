@@ -1,5 +1,5 @@
 const
-    _util = require('@nrd/fua.core.util'),
+    _util = require('@fua/core.util'),
     util  = exports = {
         ..._util,
         assert: _util.Assert('agent.server')
@@ -37,33 +37,33 @@ util.requireStoreModule = function (type) {
     switch (type) {
         case 'inmemory':
         case 'module.persistence.inmemory':
-        case '@nrd/fua.module.persistence.inmemory':
-            return require('@nrd/fua.module.persistence.inmemory');
+        case '@fua/module.persistence.inmemory':
+            return require('@fua/module.persistence.inmemory');
 
         case 'filesystem':
         case 'module.persistence.filesystem':
-        case '@nrd/fua.module.persistence.filesystem':
-            return require('@nrd/fua.module.persistence.filesystem');
+        case '@fua/module.persistence.filesystem':
+            return require('@fua/module.persistence.filesystem');
 
         case 'mongodb':
         case 'module.persistence.mongodb':
-        case '@nrd/fua.module.persistence.mongodb':
-            return require('@nrd/fua.module.persistence.mongodb');
+        case '@fua/module.persistence.mongodb':
+            return require('@fua/module.persistence.mongodb');
 
         case 'redis':
         case 'module.persistence.redis':
-        case '@nrd/fua.module.persistence.redis':
-            return require('@nrd/fua.module.persistence.redis');
+        case '@fua/module.persistence.redis':
+            return require('@fua/module.persistence.redis');
 
         case 'neo4j':
         case 'module.persistence.neo4j':
-        case '@nrd/fua.module.persistence.neo4j':
-            return require('@nrd/fua.module.persistence.neo4j');
+        case '@fua/module.persistence.neo4j':
+            return require('@fua/module.persistence.neo4j');
 
         case 'sqlite':
         case 'module.persistence.sqlite':
-        case '@nrd/fua.module.persistence.sqlite':
-            return require('@nrd/fua.module.persistence.sqlite');
+        case '@fua/module.persistence.sqlite':
+            return require('@fua/module.persistence.sqlite');
 
         default:
             util.assert(false, 'unknown StoreModule type "' + type + '"');
